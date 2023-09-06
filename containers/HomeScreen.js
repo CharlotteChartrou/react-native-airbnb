@@ -38,7 +38,7 @@ data = {data}
 
 keyExtractor={item => String(item._id)}
 renderItem={({ item }) => {
-console.log("ici---->",item.photos)
+console.log("ici---->", item.user.account.photo.url)
 
   return (
 <View> 
@@ -47,7 +47,7 @@ console.log("ici---->",item.photos)
 <Text>{item.photos[1].url}</Text>
 <Image source={item.photos[1].url}/>
 
- <FlatList
+{/*  <FlatList
  data = {item.photos}
  keyExtractor= {photos => String(photos.picture_id)}
  renderPhotos={({photos})=> {
@@ -60,11 +60,13 @@ return (
 
  }}
 
- />
+ /> */}
 <Image />
 <Entypo name="star" size={24} color="black" />
 <Entypo name="star-outlined" size={24} color="black" />
 <Text>{item.reviews} reviews</Text>
+
+<Image source={item.user.account.photo.url}/>
 
  
 
