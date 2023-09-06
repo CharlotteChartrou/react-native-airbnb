@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Button, Text, View, FlatList, Image } from "react-native";
+import { ActivityIndicator, Text, View, FlatList, Image, ScrollView, TouchableOpacity } from "react-native";
 import axios from "axios";
 import { Entypo } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/core";
 
 export default function HomeScreen() {
-
+  const navigation = useNavigation();
 
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -28,57 +29,55 @@ export default function HomeScreen() {
   return  (
     <>
       {isLoading ? (
-        <Text>Chargement...</Text>
+          <ActivityIndicator size="large" />
       ) : (
-    <View>
-      <Text>Home</Text>
+        <>
+<Image style={{width:30, height:30}} source={require("../assets/logo.png")}/>
+
+        <ScrollView >
+    
   <FlatList
 
 data = {data}
 
 keyExtractor={item => String(item._id)}
 renderItem={({ item }) => {
-console.log("ici---->", item.user.account.photo.url)
+
 
   return (
 <View> 
-  <Text>{item.price}€</Text>
+<TouchableOpacity onPress={() => navigation.push("Room", item._id)}>
+  <View>   
+
+
+<Image style={{height: 300, 
+    width: "100%", 
+    resizeMode: "contain"}} source={{uri:item.photos[1].url}}   resizeMode="contain"/> 
+<Text style={{height:60, with:120, position:"absolute", color:"white", backgroundColor:"black", fontSize:30, marginTop:200, padding:10}}>{item.price}€</Text>
+    </View>
 <Text>{item.title}</Text>
-<Text>{item.photos[1].url}</Text>
-<Image source={item.photos[1].url}/>
-
-{/*  <FlatList
- data = {item.photos}
- keyExtractor= {photos => String(photos.picture_id)}
- renderPhotos={({photos})=> {
-console.log(photos.url[1])
-return (
-  <View> 
-  <Text>{photos.url[1]}</Text>
-  </View>
-)
-
- }}
-
- /> */}
-<Image />
-<Entypo name="star" size={24} color="black" />
-<Entypo name="star-outlined" size={24} color="black" />
+<View style={{display:"flex", flexDirection:"row"}}>
+  { Number(item.ratingValue) >= 1 ? (<Entypo name="star" size={24} color="#FFB000" />):( <Entypo name="star" size={24} color="#BBBBBB" />)}
+  { Number(item.ratingValue) >=2 ? (<Entypo name="star" size={24} color="#FFB000" />):( <Entypo name="star" size={24} color="#BBBBBB" />)}
+  { Number(item.ratingValue) >= 3 ? (<Entypo name="star" size={24} color="#FFB000" />):( <Entypo name="star" size={24} color="#BBBBBB" />)}
+  { Number(item.ratingValue) >= 4 ? (<Entypo name="star" size={24} color="#FFB000" />):( <Entypo name="star" size={24} color="#BBBBBB" />)}
+  { Number(item.ratingValue) === 5 ? (<Entypo name="star" size={24} color="#FFB000" />):( <Entypo name="star" size={24} color="#BBBBBB" />)}
 <Text>{item.reviews} reviews</Text>
-
-<Image source={item.user.account.photo.url}/>
-
- 
-
+<Image style={{height: 70, 
+    width: 70,
+    borderRadius:50, 
+    resizeMode: "contain"}} source={{uri:item.user.account.photo.url}}/>
+</View>  
+    </TouchableOpacity>
 </View>
   )
 }}
 
 
 />  
-    </View> 
+    </ScrollView>
 
-  )
+  </>)
       }
   </>)
 
